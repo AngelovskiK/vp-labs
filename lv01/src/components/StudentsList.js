@@ -3,15 +3,11 @@ import StudentItem from './StudentItem';
 
 class StudentsList extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     var rows = [];
     this.props.students.forEach(curr => {
-      console.log(curr);
-      rows.push(<StudentItem student={curr} editing={this.props.editing} edit={this.props.edit} save={this.props.save}/>);
+      
+      rows.push(<StudentItem student={curr} edit={this.props.edit}/>);
     });
     return (
       <table>
