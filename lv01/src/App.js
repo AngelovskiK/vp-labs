@@ -9,7 +9,7 @@ class App extends Component {
   onEdit(args) {
     this.setState((state, props) => {
       return {
-        students: listStudents(),
+        students: state.students,
         editing: true,
         studentBeingEdited: args.student
       }
