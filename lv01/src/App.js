@@ -3,6 +3,7 @@ import './App.css';
 import StudentsList from './components/StudentsList';
 import listStudents from './repositories/studentRepository';
 import EditStudentDetails from './components/EditStudentDetails';
+import AddNewStudent from './components/AddNewStudent';
 
 class App extends Component {
 
@@ -36,6 +37,22 @@ class App extends Component {
     });
   }
 
+  onAddNewStudent(newStudent) {
+    let students = this.state.students;
+    students.push(newStudent);
+    this.setState({
+      students: students
+    });
+  }
+
+  onRemove(indeks) {
+    let students = this.state.students;
+    students.splice(students.findIndex(s => s.indeks === indeks), 1);
+    this.setState({
+      students: students
+    });
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -43,21 +60,26 @@ class App extends Component {
       editing: false,
       studentBeingEdited: null
     };
+    this.onEdit = this.onEdit.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onAddNewStudent = this.onAddNewStudent.bind(this);
+    this.onRemove = this.onRemove.bind(this);
   }
 
   render() {
-    let editDetails;
-    let studentsTable;
+    let showing;
     if(this.state.editing) {
-      editDetails = <EditStudentDetails student={this.state.studentBeingEdited} save={this.onSave.bind(this)}/>
+      showing = <EditStudentDetails student={this.state.studentBeingEdited} save={this.onSave}/>
     }else
     {
-      studentsTable = <StudentsList students={this.state.students} editing={this.state.editing} edit={this.onEdit.bind(this)} save={this.onSave.bind(this)}/>
+      showing = <div>
+          <StudentsList students={this.state.students} editing={this.state.editing} edit={this.onEdit} remove={this.onRemove}/>
+          <AddNewStudent submit={this.onAddNewStudent}/>
+        </div>
     }
     return (
       <div className="App">
-        {editDetails}
-        {studentsTable}
+        {showing}
       </div>
     );
   }
