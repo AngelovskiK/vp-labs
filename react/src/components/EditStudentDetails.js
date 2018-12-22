@@ -4,17 +4,26 @@ class EditStudentDetails extends Component {
 
   save(){
     let student = this.props.student;
-    student.ime = document.getElementById("ime").value;
-    student.prezime = document.getElementById("prezime").value;
+    student.firstName = document.getElementById("ime").value;
+    student.lastName = document.getElementById("prezime").value;
+    student.studyProgramName = document.getElementById("studyProgram").value;
     this.props.save({newStudent: student});
   }
 
   render() {
+    let options = []
+    this.props.studyPrograms.map(studyProgram => 
+        options.push(<option value={studyProgram.name}>
+            {studyProgram.name}
+        </option>)
+    );
     return (<div>
         <h3>Editing {this.props.student.indeks}</h3>
-        <input type="text" defaultValue={this.props.student.ime} id="ime"/>
+        <input type="text" defaultValue={this.props.student.firstName} id="ime"/>
         <br/>
-        <input type="text" defaultValue={this.props.student.prezime} id="prezime"/>
+        <input type="text" defaultValue={this.props.student.lastName} id="prezime"/>
+        <br/>
+        <select  id="studyProgram">{options}</select>
         <br/>
         <input onClick={this.save.bind(this)} type="submit" value="Save"/>
       </div>);

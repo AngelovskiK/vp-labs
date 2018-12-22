@@ -39,7 +39,6 @@ class StudentsList extends Component {
               <th>Indeks</th>
               <th>Ime</th>
               <th>Prezime</th>
-              <th>Nasoka</th>
               <th>Izbrisi</th>
             </tr>
           </thead>

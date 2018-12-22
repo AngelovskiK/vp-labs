@@ -121,7 +121,7 @@ public class StudentService implements IStudentService {
         Optional<Student> optionalStudent = studentRepository.findById(index);
         if(optionalStudent.isPresent()) {
             studentRepository.delete(optionalStudent.get());
-            return ResponseEntity.ok("Delete student with index: "+index);
+            return ResponseEntity.ok("Deleted student with index: "+index);
         }else {
             throw new NoMatchingStudent(index);
         }

@@ -2,19 +2,26 @@ import React, { Component } from 'react';
 
 class AddNewStudent extends Component {
 
+
     submit(e) {
         e.preventDefault();
         e.stopPropagation();
         this.props.submit({
-            indeks: document.getElementById("indeks").value,
-            ime: document.getElementById("ime").value,
-            prezime: document.getElementById("prezime").value,
-            nasoka: document.getElementById("nasoka").value,
+            index: document.getElementById("indeks").value,
+            name: document.getElementById("ime").value,
+            lastName: document.getElementById("prezime").value,
+            studyProgramName: document.getElementById("nasoka").value,
         });
         [].slice.call(document.querySelectorAll("input[type=text]")).forEach(input => input.value = '');
     }
 
     render() {
+        let options = [];
+        this.props.studyPrograms.map(studyProgram => 
+            options.push(<option value={studyProgram.name}>
+                {studyProgram.name}
+            </option>)
+        );
         return (
             <form onSubmit={this.submit.bind(this)}>
                 <table>
@@ -33,7 +40,7 @@ class AddNewStudent extends Component {
                         </tr>
                         <tr>
                             <td>Nasoka:</td>
-                            <td><input type="text" id="nasoka"/></td>
+                            <td><select>{options}</select></td>
                         </tr>
                         <tr>
                             <td colSpan="2">
