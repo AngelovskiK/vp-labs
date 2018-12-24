@@ -15,10 +15,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class StudentService implements IStudentService {
     @Autowired
@@ -27,7 +30,10 @@ public class StudentService implements IStudentService {
     private IStudyProgramRepository studyProgramRepository;
 
     @Override
-    public Iterable<Student> getAllStudents() { return studentRepository.findAll(); }
+    public Iterable<Student> getAllStudents() {
+        Iterable<Student> students = studentRepository.findAll();
+        return students;
+    }
 
     @Override
     public Student getStudentWithIndex(String index) {
@@ -45,7 +51,7 @@ public class StudentService implements IStudentService {
         if(!optionalStudyProgram.isPresent()) {
             throw new NoMatchingStudyProgram(studyProgram);
         }
-        return studentRepository.getByStudyProgram(optionalStudyProgram.get());
+        return studentRepository.findByStudyProgram(optionalStudyProgram.get());
     }
 
     @Override

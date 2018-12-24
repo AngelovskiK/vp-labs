@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import StudentsList from './components/StudentsList';
-import listStudents from './repositories/studentRepository';
 import EditStudentDetails from './components/EditStudentDetails';
 import AddNewStudent from './components/AddNewStudent';
-
+import {post, patch, del} from './repositories/studentRepository';
 class App extends Component {
 
   onEdit(args) {
@@ -24,7 +23,7 @@ class App extends Component {
     students.forEach(student => {
       if(student.indeks === args.newStudent.indeks) {
         
-        this.patchData('http://localhost:8080/students/'+args.newStudent.index, {
+        patch('http://localhost:8080/students/'+args.newStudent.index, {
           name: student.firstName === args.newStudent.firstName ? null : args.newStudent.firstName,
           lastName: student.lastName === args.newStudent.lastName ? null : args.newStudent.lastName,
           studyProgramName: args.newStudent.studyProgramName
@@ -48,8 +47,8 @@ class App extends Component {
 
   onAddNewStudent(newStudent) {
     let students = this.state.students;
-    this.postData('http://localhost:8080/students/', newStudent).then(data => {
-      if(data.status != 201){
+    post('http://localhost:8080/students/', newStudent).then(data => {
+      if(data.status !== 201){
         alert(data.message);
         return;
       }
@@ -67,7 +66,7 @@ class App extends Component {
 
   onRemove(indeks) {
     let students = this.state.students;
-    this.delete('http://localhost:8080/students/'+indeks).then(data => {
+    del('http://localhost:8080/students/'+indeks).then(data => {
       if(data.status === 404)
         alert(data.message);
     });
@@ -77,67 +76,11 @@ class App extends Component {
     });
   }
 
-  postData(url = ``, data = {}) {
-    // Default options are marked with *
-      return fetch(url, {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, cors, *same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-              "Content-Type": "application/json",
-              // "Content-Type": "application/x-www-form-urlencoded",
-          },
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // no-referrer, *client
-          body: JSON.stringify(data), // body data type must match "Content-Type" header
-      })
-      .then(response => response.json()) // parses response to JSON
-      .catch(err => err);
-  }
-
-  patchData(url = ``, data = {}) {
-    // Default options are marked with *
-      return fetch(url, {
-          method: "PATCH", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, cors, *same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-              "Content-Type": "application/json",
-              // "Content-Type": "application/x-www-form-urlencoded",
-          },
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // no-referrer, *client
-          body: JSON.stringify(data), // body data type must match "Content-Type" header
-      })
-      .then(response => response.json()) // parses response to JSON
-      .catch(err => err);
-  }
-
-  delete(url = ``) {
-    // Default options are marked with *
-      return fetch(url, {
-          method: "DELETE", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, cors, *same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-              "Content-Type": "application/json",
-              // "Content-Type": "application/x-www-form-urlencoded",
-          },
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // no-referrer, *client
-      })
-      .then(response => response.json()) // parses response to JSON
-      .catch(err => err);
-  }
-
   
   deleteStudyProgram(id) {
     console.log(id);
     const that = this;
-    this.delete('http://localhost:8080/study_programs/'+id).then((data) => {
+    del('http://localhost:8080/study_programs/'+id).then((data) => {
       if(data.status && data.status !== 200)
         alert(data.message);
       else {
@@ -155,7 +98,7 @@ class App extends Component {
   createNewStudyProgram() {
     let name = document.getElementById("novaStudiskaPrograma").value;
     const that = this;
-    this.postData('http://localhost:8080/study_programs/', {name: name}).then((data)=> {
+    post('http://localhost:8080/study_programs/', {name: name}).then((data)=> {
       if(data.status) 
         alert(data.message);
       else {

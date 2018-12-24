@@ -14,6 +14,7 @@ class StudentItem extends Component {
         <td>{this.props.student.index}</td>
         <td>{this.props.student.firstName}</td>
         <td>{this.props.student.lastName}</td>
+        <td>{this.props.student.studyProgram.name}</td>
         <td><button onClick={this.remove.bind(this)}>Izbrisi</button></td>
       </tr>
     );

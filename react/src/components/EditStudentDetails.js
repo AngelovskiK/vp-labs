@@ -13,7 +13,7 @@ class EditStudentDetails extends Component {
   render() {
     let options = []
     this.props.studyPrograms.map(studyProgram => 
-        options.push(<option value={studyProgram.name}>
+        options.push(<option value={studyProgram.name} selected={this.props.student.studyProgram.name === studyProgram.name}>
             {studyProgram.name}
         </option>)
     );
